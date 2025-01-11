@@ -1,0 +1,2 @@
+Make a simple atlas then test!!!
+   -Make a simple 16 by 16 money and empty
