@@ -1,0 +1,15 @@
+debugSimpleFactory.png
+size:128,32
+repeat:none
+convayerTile
+bounds:77,8,16,16
+emptyTile
+bounds:58,8,16,16
+money
+bounds:1,1,4,4
+moneySpawnTile
+bounds:1,8,16,16
+moneyTile
+bounds:39,8,16,16
+sellTile
+bounds:20,8,16,16

@@ -1,26 +1,27 @@
 package com.BrigBryu.SpeedPunk.utils.Tiles;
 
 import com.BrigBryu.SpeedPunk.utils.GameConstants;
+import com.BrigBryu.SpeedPunk.utils.Map.FactoryMap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public abstract class FactoryTile extends Tile{
+public abstract class FactoryTile extends Tile implements ClickableFactoryTile, HoverFactoryTile{
 
     private boolean isHighlighted;
-    private int factoryTileID;
+    private GameConstants.TileType tileType;
 
-    public FactoryTile(float x, float y, float width, float height, int factoryTileID, TextureRegion textureRegion) {
+    public FactoryTile(float x, float y, float width, float height, GameConstants.TileType type, TextureRegion textureRegion) {
         super(x, y, width, height, textureRegion);
         this.isHighlighted = false;
-        this.factoryTileID = factoryTileID;
+        this.tileType = type;
     }
 
     public void setHighlighted(boolean isHighlighted) {
         this.isHighlighted = isHighlighted;
     }
 
-    public int getFactoryTileID(){
-        return factoryTileID;
+    public GameConstants.TileType getFactoryTileID(){
+        return tileType;
     }
 
     @Override
@@ -30,5 +31,10 @@ public abstract class FactoryTile extends Tile{
         }
         spriteBatch.draw(textureRegion, x, y, width, height);
         spriteBatch.setColor(1f, 1f, 1f, 1f); //default
+    }
+
+    @Override
+    public void hover() {
+        System.out.println("Over");
     }
 }

@@ -6,13 +6,16 @@ public class GameConstants {
     public static final int TILE_WIDTH = 16;
     public static final int TILE_HEIGHT = 16;
 
-
-
-    // Building Types
-    public static final int EMPTY_TILE = 0;
-    public static final int MONEY_MAKER = 1;
-    public static final int MONEY_SPENDER = 2;
+    //File locations
+    public static final String PLAYER_STATE_SAVE_LOCATION = "core/saves/playerSave.json";
+    public static final String FACTORY_MAP_SAVE_LOCATION = "core/saves/factoryMap.json";
 
     // Colors (Red, Green, Blue, Alpha)
-    public static final Color HOVER_COLOR = new Color(1f, 0f, 0f, 0.5f); // Red with transparency
+    public static final Color HOVER_COLOR = new Color(.8f, 0f, 0f, .9f); // Red with transparency
+
+    //Enums
+    public enum TileType {
+        EMPTY,
+        MONEY_MAKER
+    }
 }

@@ -14,5 +14,4 @@ public class MapData {
         this.cols = cols;
         this.tileGrid = new TileData[rows][cols];
     }
-
 }
