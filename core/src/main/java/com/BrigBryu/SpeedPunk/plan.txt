@@ -1,2 +1,5 @@
-Make a simple atlas then test!!!
-   -Make a simple 16 by 16 money and empty
+Build & Expand: Design a flying base to automate resource refining and mech upgrades.
+Deploy Mechs/automata: Send customizable mechs/automata to the surface to gather resources and battle hostile automata.
+Combat & Resource Retrieval: Fight enemies imprinted from animal behavior, secure resource drop zones, or return with the whole mech.
+Upgrade & Progress: Use resources to improve the factory, craft better mechs, and reclaim new biomes.
+End Goal: Defeat the villain who corrupted the world with rogue automata.
