@@ -36,6 +36,8 @@ public class FactoryScreen implements Screen {
     private FactoryMap worldMap;
     private PlayerState playerState;
 
+    private GameConstants.TileType selectedTileType;
+
     public FactoryScreen(SpeedPunk game) {
         this.game = game;
     }
@@ -79,26 +81,43 @@ public class FactoryScreen implements Screen {
     }
 
     private void handleInput() {
-        // mouse click
+        // 1) Check number keys to select a tile type
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+            selectedTileType = (GameConstants.TileType.NODE_PRODUCER);
+            System.out.println("Selected tile: NODE_PRODUCER");
+        }
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+            selectedTileType = (GameConstants.TileType.CONVEYOR_BELT);
+            System.out.println("Selected tile: CONVEYOR_BELT");
+        }
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+            selectedTileType = (GameConstants.TileType.COLLECTOR);
+            System.out.println("Selected tile: COLLECTOR");
+        }
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
+            selectedTileType = (GameConstants.TileType.STORAGE);
+            System.out.println("Selected tile: STORAGE");
+        }
+
+        // 2) Left-Click => Place or interact
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             Vector3 worldCoords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(worldCoords); // converts screen → world
+            camera.unproject(worldCoords); // screen → world
 
-            // Now worldCoords.x and worldCoords.y map to the same coordinate system as your tiles
             int tileX = (int)(worldCoords.x / GameConstants.TILE_WIDTH);
             int tileY = (int)(worldCoords.y / GameConstants.TILE_HEIGHT);
 
-            worldMap.handleClick(tileX, tileY);
+            // Let the map handle clicks (potentially placing or interacting with a tile)
+            worldMap.handleClick(tileX, tileY, selectedTileType);
         }
 
+        // 3) Handle Save/Load/Escape (unchanged from your code)
         if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
             worldMap.save(GameConstants.FACTORY_MAP_SAVE_LOCATION);
         }
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
             worldMap = FactoryMap.load(GameConstants.FACTORY_MAP_SAVE_LOCATION, atlas, playerState);
         }
-
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             playerState.saveToFile(GameConstants.PLAYER_STATE_SAVE_LOCATION);
             worldMap.save(GameConstants.FACTORY_MAP_SAVE_LOCATION);

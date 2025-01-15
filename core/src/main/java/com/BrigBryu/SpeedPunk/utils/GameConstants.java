@@ -16,6 +16,22 @@ public class GameConstants {
     //Enums
     public enum TileType {
         EMPTY,
-        MONEY_MAKER
+        MONEY_MAKER,
+        CONVEYOR_BELT,
+        NODE_PRODUCER,
+        COLLECTOR,
+        STORAGE
+    }
+
+    public enum DirectionType {
+        NORTH,
+        SOUTH,
+        EAST,
+        WEST,
+        NA
+    }
+
+    public enum ResourceType {
+        MONEY
     }
 }

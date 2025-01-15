@@ -48,9 +48,6 @@ public class FactoryMap {
         }
     }
 
-    /**
-     * Draw all tiles on the map.
-     */
     public void draw(SpriteBatch spriteBatch) {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
@@ -59,9 +56,7 @@ public class FactoryMap {
         }
     }
 
-    /**
-     * Convert the current in-memory Tile array to a MapData for JSON saving.
-     */
+    //Mark: json
     private MapData toMapData() {
         MapData mapData = new MapData(rows, cols);
         for (int r = 0; r < rows; r++) {
@@ -74,16 +69,12 @@ public class FactoryMap {
                     type = MONEY_MAKER;
                 }
 
-                mapData.tileGrid[r][c] = new TileData(t.x, t.y, type);
+                mapData.tileGrid[r][c] = new TileData(t.rectangle.x, t.rectangle.y, type);
             }
         }
         return mapData;
     }
 
-
-    /**
-     * Save the current map to a JSON file.
-     */
     public void save(String fileName) {
         MapData mapData = toMapData();
         Json json = new Json();
@@ -95,10 +86,6 @@ public class FactoryMap {
         System.out.println("Map saved to " + fileName);
     }
 
-    /**
-     * Load a map from JSON, rebuild the Tile array.
-     */
-    // FactoryMap.java (partial)
     public static FactoryMap load(String fileName, TextureAtlas atlas, PlayerState playerState) {
         FileHandle file = Gdx.files.local(fileName);
         if (!file.exists()) {
@@ -122,7 +109,6 @@ public class FactoryMap {
                 float x = tData.x;
                 float y = tData.y;
 
-                // Rebuild tile classes from 'type'
                 switch (type) {
                     case MONEY_MAKER:
                         factoryMap.tiles[r][c] = new MoneyMaker(x, y, GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT, factoryMap.moneyMakerRegion);
@@ -155,7 +141,7 @@ public class FactoryMap {
         }
     }
 
-    // === Handle clicks on all types of tiles ===
+    //Mark: Handle clicks on all types of tiles
     public void handleClick(int tileX, int tileY) {
         if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
             tiles[tileY][tileX].click(this, tileX, tileY);
@@ -163,12 +149,102 @@ public class FactoryMap {
     }
 
     public void handleClick(MoneyMaker moneyMaker,int tileX, int tileY) {
-        playerState.setMoney(playerState.getMoney() + moneyMaker.getAmountToAdd());
-        System.out.println("Current money is now: " + playerState.getMoney());
+        playerState.setResource(GameConstants.ResourceType.MONEY, moneyMaker.getAmountToAdd());
+        System.out.println("Current money is now: " + playerState.getResource(GameConstants.ResourceType.MONEY));
     }
 
     public void handleClick(EmptyTile emptyTile, int tileX, int tileY) {
         System.out.println("Converting empty tile to money tile");
-        tiles[tileY][tileX] = new MoneyMaker(emptyTile.x, emptyTile.y, GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT, moneyMakerRegion);
+        tiles[tileY][tileX] = new MoneyMaker(emptyTile.rectangle.x, emptyTile.rectangle.y, GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT, moneyMakerRegion);
     }
+
+    public void handleClick(StorageFactoryTile storageFactoryTile, int tileX, int tileY) {
+        //TODO show tips
+    }
+
+    public FactoryTile getTile(int neighborX, int neighborY) {
+        return tiles[neighborY][neighborX];
+    }
+
+    public void handleClick(ConveyorBeltTile conveyorBeltTile, int tileX, int tileY) {
+    }
+
+    public void handleClick(BasicResourceCollectorTile basicResourceCollectorTile, int tileX, int tileY) {
+    }
+
+    //Mark: add buildings to map
+    public void handleClick(int tileX, int tileY, GameConstants.TileType selectedType) {
+        if (tileX < 0 || tileX >= cols || tileY < 0 || tileY >= rows) {
+            return;
+        }
+
+        FactoryTile currentTile = tiles[tileY][tileX];
+        if (currentTile instanceof EmptyTile) {
+            if (selectedType != GameConstants.TileType.EMPTY) {
+                placeTile(tileX, tileY, selectedType);
+            } else {
+                System.out.println("No tile selected; doing nothing.");
+            }
+        } else {
+            currentTile.click(this, tileX, tileY);
+        }
+    }
+
+    private void placeTile(int tileX, int tileY, GameConstants.TileType type) {
+        float x = tileX * GameConstants.TILE_WIDTH;
+        float y = tileY * GameConstants.TILE_HEIGHT;
+
+        switch (type) {
+            case NODE_PRODUCER:
+                tiles[tileY][tileX] = new MoneyMaker(
+                    x, y,
+                    GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT,
+                    moneyMakerRegion
+                );
+                System.out.println("Placed a MoneyMaker at (" + tileX + ", " + tileY + ")");
+                break;
+
+            case CONVEYOR_BELT:
+                // You’ll need a conveyor texture:
+                TextureRegion conveyorRegion = atlas.findRegion("convayerTile");
+                tiles[tileY][tileX] = new ConveyorBeltTile(
+                    x, y,
+                    GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT,
+                    GameConstants.DirectionType.EAST, // or default direction
+                    conveyorRegion
+                );
+                System.out.println("Placed a Conveyor Belt at (" + tileX + ", " + tileY + ")");
+                break;
+
+            case COLLECTOR:
+                // You’ll need a collector texture:
+                TextureRegion collectorRegion = atlas.findRegion("moneySpawnTile");
+                tiles[tileY][tileX] = new BasicResourceCollectorTile(
+                    x, y,
+                    GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT,
+                    GameConstants.DirectionType.EAST, // or default direction
+                    collectorRegion
+                );
+                System.out.println("Placed a Collector at (" + tileX + ", " + tileY + ")");
+                break;
+
+            case STORAGE:
+                // You’ll need a storage texture:
+                TextureRegion storageRegion = atlas.findRegion("sellTile");
+                tiles[tileY][tileX] = new StorageFactoryTile(
+                    x, y,
+                    GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT,
+                    GameConstants.TileType.STORAGE,
+                    storageRegion
+                );
+                System.out.println("Placed Storage at (" + tileX + ", " + tileY + ")");
+                break;
+
+            default:
+                // Fallback: place empty or do nothing
+                System.out.println("Unhandled tile type: " + type + ". Doing nothing.");
+        }
+    }
+
+
 }

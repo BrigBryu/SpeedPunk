@@ -4,49 +4,70 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.EnumMap;
+import java.util.Map;
 
 public class PlayerState {
 
-    // Fields to serialize
-    private int money;
+    // Map to serialize all resources
+    private Map<GameConstants.ResourceType, Float> resources;
 
-
-    //need default for json
+    // Default constructor for JSON
     public PlayerState() {
-        this.money = 0;
+        // Initialize the map with default values
+        resources = new EnumMap<>(GameConstants.ResourceType.class);
+        for (GameConstants.ResourceType type : GameConstants.ResourceType.values()) {
+            resources.put(type, 0.0f); // Default value for each resource
+        }
     }
 
-    public int getMoney() {
-        return money;
+    //Mark: Resource management
+    public Map<GameConstants.ResourceType, Float> getResources() {
+        return resources;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
+    public void setResources(Map<GameConstants.ResourceType, Float> resources) {
+        this.resources = resources;
     }
 
+    public float getResource(GameConstants.ResourceType type) {
+        return resources.getOrDefault(type, 0.0f);
+    }
 
+    public void setResource(GameConstants.ResourceType type, float value) {
+        resources.put(type, value);
+    }
 
-    // --- JSON Save and Load Methods ---
+    public void increaseResource(GameConstants.ResourceType type, float value){
+        setResource(type, getResource(type) + value);
+    }
+
+    public void reduceResource(GameConstants.ResourceType type, float value){
+        float result = getResource(type) - value;
+        if(result < 0) {
+            result = 0;
+        }
+        setResource(type, result);
+    }
 
     /**
-     * Saves this PlayerState to a JSON file.
+     * @return if there is more or the same of value type of resource
      */
+    public boolean checkResource(GameConstants.ResourceType type, float value){
+        return getResource(type) >= value;
+    }
+
+    //Mark: Json storage
     public void saveToFile(String fileName) {
         Json json = new Json();
         String jsonString = json.toJson(this);
 
-        // Write
         FileHandle file = Gdx.files.local(fileName);
         file.writeString(jsonString, false);
 
         System.out.println("PlayerState saved: " + jsonString);
     }
 
-    /**
-     * Static method to load PlayerState from a JSON file.
-     */
     public static PlayerState loadFromFile(String fileName) {
         FileHandle file = Gdx.files.local(fileName);
 

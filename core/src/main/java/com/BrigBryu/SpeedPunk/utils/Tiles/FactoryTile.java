@@ -9,10 +9,13 @@ public abstract class FactoryTile extends Tile implements ClickableFactoryTile, 
 
     private boolean isHighlighted;
     private GameConstants.TileType tileType;
+    public GameConstants.DirectionType direction;
 
-    public FactoryTile(float x, float y, float width, float height, GameConstants.TileType type, TextureRegion textureRegion) {
-        super(x, y, width, height, textureRegion);
+
+    public FactoryTile(float xPixels, float yPixels, float widthPixels, float heightPixels, GameConstants.DirectionType direction, GameConstants.TileType type, TextureRegion textureRegion) {
+        super(xPixels, yPixels, widthPixels,heightPixels, textureRegion);
         this.isHighlighted = false;
+        this.direction = direction;
         this.tileType = type;
     }
 
@@ -29,7 +32,7 @@ public abstract class FactoryTile extends Tile implements ClickableFactoryTile, 
         if (isHighlighted) {
             spriteBatch.setColor(GameConstants.HOVER_COLOR);
         }
-        spriteBatch.draw(textureRegion, x, y, width, height);
+        spriteBatch.draw(textureRegion, rectangle.x, rectangle.y, rectangle.width, rectangle.height);
         spriteBatch.setColor(1f, 1f, 1f, 1f); //default
     }
 
@@ -37,4 +40,10 @@ public abstract class FactoryTile extends Tile implements ClickableFactoryTile, 
     public void hover() {
         System.out.println("Over");
     }
-}
+
+    /**
+     * Called when a new tile is placed next to this tile
+     */
+    public abstract void update(float deltaTime);
+
+    }

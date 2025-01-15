@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class MoneyMaker extends FactoryTile  {
 
-    public MoneyMaker(float x, float y, float width, float height, TextureRegion textureRegion) {
-        super(x, y, width, height, GameConstants.TileType.MONEY_MAKER, textureRegion);
+    public MoneyMaker(float xPixels, float yPixels, float widthPixels, float heightPixels, TextureRegion textureRegion) {
+        super(xPixels, yPixels, widthPixels,heightPixels, GameConstants.DirectionType.NA, GameConstants.TileType.MONEY_MAKER, textureRegion);
     }
 
     @Override
@@ -15,12 +15,17 @@ public class MoneyMaker extends FactoryTile  {
         factoryMap.handleClick(this, tileX, tileY);
     }
 
-    @Override
-    public void hover() {
-        System.out.println("Over");
-    }
-
     public int getAmountToAdd() {
         return 5; //TODO
+    }
+
+    /**
+     * Called when a new tile is placed next to this tile
+     *
+     * @param deltaTime
+     */
+    @Override
+    public void update(float deltaTime) {
+
     }
 }
