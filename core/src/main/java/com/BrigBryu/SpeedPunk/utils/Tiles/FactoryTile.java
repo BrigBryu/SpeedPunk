@@ -1,9 +1,8 @@
 package com.BrigBryu.SpeedPunk.utils.Tiles;
 
 import com.BrigBryu.SpeedPunk.utils.GameConstants;
-import com.BrigBryu.SpeedPunk.utils.Map.FactoryMap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public abstract class FactoryTile extends Tile implements ClickableFactoryTile, HoverFactoryTile{
 
@@ -12,8 +11,8 @@ public abstract class FactoryTile extends Tile implements ClickableFactoryTile, 
     public GameConstants.DirectionType direction;
 
 
-    public FactoryTile(float xPixels, float yPixels, float widthPixels, float heightPixels, GameConstants.DirectionType direction, GameConstants.TileType type, TextureRegion textureRegion) {
-        super(xPixels, yPixels, widthPixels,heightPixels, textureRegion);
+    public FactoryTile(float xPixels, float yPixels, float widthPixels, float heightPixels, GameConstants.DirectionType direction, GameConstants.TileType type, TextureAtlas atlas) {
+        super(xPixels, yPixels, widthPixels,heightPixels, atlas);
         this.isHighlighted = false;
         this.direction = direction;
         this.tileType = type;
@@ -23,7 +22,7 @@ public abstract class FactoryTile extends Tile implements ClickableFactoryTile, 
         this.isHighlighted = isHighlighted;
     }
 
-    public GameConstants.TileType getFactoryTileID(){
+    public GameConstants.TileType getFactoryTileType(){
         return tileType;
     }
 
@@ -41,9 +40,7 @@ public abstract class FactoryTile extends Tile implements ClickableFactoryTile, 
         System.out.println("Over");
     }
 
-    /**
-     * Called when a new tile is placed next to this tile
-     */
+
     public abstract void update(float deltaTime);
 
     }

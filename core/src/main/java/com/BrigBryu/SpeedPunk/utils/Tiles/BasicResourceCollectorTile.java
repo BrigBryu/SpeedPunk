@@ -3,12 +3,12 @@ package com.BrigBryu.SpeedPunk.utils.Tiles;
 import com.BrigBryu.SpeedPunk.FactoryGameObjects.FactoryResourceNode;
 import com.BrigBryu.SpeedPunk.utils.GameConstants;
 import com.BrigBryu.SpeedPunk.utils.Map.FactoryMap;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class BasicResourceCollectorTile extends ResourceCollectorFactoryTile {
     public BasicResourceCollectorTile(float x, float y, float w, float h,
-                                      GameConstants.DirectionType direction, TextureRegion textureRegion) {
-        super(x, y, w, h, direction, textureRegion);
+                                      GameConstants.DirectionType direction, TextureAtlas atlas) {
+        super(x, y, w, h, direction, atlas);
     }
 
     @Override
@@ -27,5 +27,10 @@ public class BasicResourceCollectorTile extends ResourceCollectorFactoryTile {
     @Override
     public void click(FactoryMap factoryMap, int tileX, int tileY) {
         factoryMap.handleClick(this,tileX,tileY);
+    }
+
+    @Override
+    protected void setRegion() {
+        textureRegion = atlas.findRegion("collector");
     }
 }

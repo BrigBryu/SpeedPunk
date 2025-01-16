@@ -3,7 +3,7 @@ package com.BrigBryu.SpeedPunk.utils.Tiles;
 import com.BrigBryu.SpeedPunk.FactoryGameObjects.FactoryResourceNode;
 import com.BrigBryu.SpeedPunk.utils.GameConstants;
 import com.BrigBryu.SpeedPunk.utils.Map.FactoryMap;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ public class ConveyorBeltTile extends FactoryTile{
     private List<FactoryResourceNode> resourceNodeList;
     private StorageFactoryTile storage;
 
-    public ConveyorBeltTile(float xPixels, float yPixels, float widthPixels, float heightPixels, GameConstants.DirectionType direction, TextureRegion textureRegion) {
-        super(xPixels, yPixels, widthPixels,heightPixels, direction, GameConstants.TileType.CONVEYOR_BELT, textureRegion);
+    public ConveyorBeltTile(float xPixels, float yPixels, float widthPixels, float heightPixels, GameConstants.DirectionType direction, TextureAtlas atlas) {
+        super(xPixels, yPixels, widthPixels,heightPixels, direction, GameConstants.TileType.CONVEYOR_BELT, atlas);
         resourceNodeList = new ArrayList<>();
         storage = null;
     }
@@ -54,8 +54,8 @@ public class ConveyorBeltTile extends FactoryTile{
     }
 
     private boolean hasReachedEndOfConveyor(FactoryResourceNode node) {
-        Rectangle beltRectangle = this.rectangle; // Conveyor's rectangle
-        Rectangle nodeRectangle = node.rectangle; // Node's rectangle
+        Rectangle beltRectangle = this.rectangle;
+        Rectangle nodeRectangle = node.rectangle;
 
         switch (direction) {
             case NORTH: // Moving up
@@ -80,5 +80,10 @@ public class ConveyorBeltTile extends FactoryTile{
 
     public void setOutputStorage(StorageFactoryTile storage) {
         this.storage = storage;
+    }
+
+    @Override
+    protected void setRegion() {
+        textureRegion = atlas.findRegion("convayerTile");
     }
 }

@@ -2,7 +2,7 @@ package com.BrigBryu.SpeedPunk.utils.Tiles;
 
 import com.BrigBryu.SpeedPunk.FactoryGameObjects.FactoryResourceNode;
 import com.BrigBryu.SpeedPunk.utils.GameConstants;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public abstract class ResourceCollectorFactoryTile extends FactoryTile {
     protected ConveyorBeltTile inputBelt;
@@ -10,8 +10,8 @@ public abstract class ResourceCollectorFactoryTile extends FactoryTile {
     protected StorageFactoryTile outputStorage;
 
     public ResourceCollectorFactoryTile(float x, float y, float w, float h,
-                                        GameConstants.DirectionType direction, TextureRegion textureRegion) {
-        super(x, y, w, h, direction, GameConstants.TileType.COLLECTOR, textureRegion);
+                                        GameConstants.DirectionType direction, TextureAtlas atlas) {
+        super(x, y, w, h, direction, GameConstants.TileType.COLLECTOR, atlas);
     }
 
     public abstract void acceptNode(FactoryResourceNode node);

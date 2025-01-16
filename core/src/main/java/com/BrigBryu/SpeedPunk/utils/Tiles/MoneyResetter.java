@@ -4,9 +4,10 @@ import com.BrigBryu.SpeedPunk.utils.GameConstants;
 import com.BrigBryu.SpeedPunk.utils.Map.FactoryMap;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-public class EmptyTile extends FactoryTile{
-    public EmptyTile(float xPixels, float yPixels, float widthPixels, float heightPixels, TextureAtlas atlas) {
-        super(xPixels, yPixels, widthPixels, heightPixels, GameConstants.DirectionType.NA, GameConstants.TileType.EMPTY, atlas);
+public class MoneyResetter extends FactoryTile  {
+
+    public MoneyResetter(float xPixels, float yPixels, float widthPixels, float heightPixels, TextureAtlas atlas) {
+        super(xPixels, yPixels, widthPixels,heightPixels, GameConstants.DirectionType.NA, GameConstants.TileType.MONEY_MAKER, atlas);
     }
 
     @Override
@@ -21,6 +22,6 @@ public class EmptyTile extends FactoryTile{
 
     @Override
     protected void setRegion() {
-        textureRegion = atlas.findRegion("emptyTile");
+        textureRegion = atlas.findRegion("moneyReset");
     }
 }

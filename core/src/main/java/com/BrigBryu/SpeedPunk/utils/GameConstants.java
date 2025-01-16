@@ -12,6 +12,8 @@ public class GameConstants {
 
     // Colors (Red, Green, Blue, Alpha)
     public static final Color HOVER_COLOR = new Color(.8f, 0f, 0f, .9f); // Red with transparency
+    public static final Color HOVER_COLOR_ROTATION = new Color(0f, 0f, 0.8f, .9f); // Blue with transparency
+
 
     //Enums
     public enum TileType {

@@ -26,7 +26,7 @@ public class FactoryScreen implements Screen {
     private static final float VIRTUAL_WIDTH = 640;
     private static final float VIRTUAL_HEIGHT = 360;
 
-    private SpeedPunk game;              // Reference to our main Game class
+    private SpeedPunk game;
     private OrthographicCamera camera;
     private ExtendViewport viewport;
 
@@ -37,6 +37,7 @@ public class FactoryScreen implements Screen {
     private PlayerState playerState;
 
     private GameConstants.TileType selectedTileType;
+    private GameConstants.DirectionType selectedDirection = GameConstants.DirectionType.EAST;
 
     public FactoryScreen(SpeedPunk game) {
         this.game = game;
@@ -44,7 +45,6 @@ public class FactoryScreen implements Screen {
 
     @Override
     public void show() {
-        // Setup camera and viewport
         camera = new OrthographicCamera();
         viewport = new ExtendViewport(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, camera);
         // Center camera
@@ -70,6 +70,7 @@ public class FactoryScreen implements Screen {
         camera.position.x = (int) camera.position.x;
         camera.position.y = (int) camera.position.y;
         camera.update();
+        worldMap.update(delta);
         game.spriteBatch.setProjectionMatrix(camera.combined);
 
         handleInput();
@@ -81,37 +82,48 @@ public class FactoryScreen implements Screen {
     }
 
     private void handleInput() {
-        // 1) Check number keys to select a tile type
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-            selectedTileType = (GameConstants.TileType.NODE_PRODUCER);
+            selectedTileType = GameConstants.TileType.NODE_PRODUCER;
             System.out.println("Selected tile: NODE_PRODUCER");
-        }
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
-            selectedTileType = (GameConstants.TileType.CONVEYOR_BELT);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+            selectedTileType = GameConstants.TileType.CONVEYOR_BELT;
             System.out.println("Selected tile: CONVEYOR_BELT");
-        }
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
-            selectedTileType = (GameConstants.TileType.COLLECTOR);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+            selectedTileType = GameConstants.TileType.COLLECTOR;
             System.out.println("Selected tile: COLLECTOR");
-        }
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
-            selectedTileType = (GameConstants.TileType.STORAGE);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
+            selectedTileType = GameConstants.TileType.STORAGE;
             System.out.println("Selected tile: STORAGE");
         }
 
-        // 2) Left-Click => Place or interact
+        if (selectedTileType == GameConstants.TileType.CONVEYOR_BELT ||
+            selectedTileType == GameConstants.TileType.COLLECTOR) {
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+                selectedDirection = GameConstants.DirectionType.NORTH;
+                System.out.println("Direction: NORTH");
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+                selectedDirection = GameConstants.DirectionType.EAST;
+                System.out.println("Direction: EAST");
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+                selectedDirection = GameConstants.DirectionType.SOUTH;
+                System.out.println("Direction: SOUTH");
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+                selectedDirection = GameConstants.DirectionType.WEST;
+                System.out.println("Direction: WEST");
+            }
+        }
+
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             Vector3 worldCoords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(worldCoords); // screen → world
+            camera.unproject(worldCoords);
 
             int tileX = (int)(worldCoords.x / GameConstants.TILE_WIDTH);
             int tileY = (int)(worldCoords.y / GameConstants.TILE_HEIGHT);
 
-            // Let the map handle clicks (potentially placing or interacting with a tile)
-            worldMap.handleClick(tileX, tileY, selectedTileType);
+            worldMap.handleClick(tileX, tileY, selectedTileType, selectedDirection);
         }
 
-        // 3) Handle Save/Load/Escape (unchanged from your code)
         if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
             worldMap.save(GameConstants.FACTORY_MAP_SAVE_LOCATION);
         }
