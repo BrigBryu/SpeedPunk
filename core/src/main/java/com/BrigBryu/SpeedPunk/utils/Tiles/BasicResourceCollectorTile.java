@@ -29,8 +29,8 @@ public class BasicResourceCollectorTile extends ResourceCollectorFactoryTile {
         factoryMap.handleClick(this,tileX,tileY);
     }
 
-    @Override
-    protected void setRegion() {
-        textureRegion = atlas.findRegion("collector");
-    }
+//    @Override
+//    protected void setRegion() {
+//        textureRegion = atlas.findRegion("collector");
+//    }
 }

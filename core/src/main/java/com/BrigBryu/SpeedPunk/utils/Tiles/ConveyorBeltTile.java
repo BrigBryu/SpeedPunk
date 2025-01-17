@@ -82,8 +82,8 @@ public class ConveyorBeltTile extends FactoryTile{
         this.storage = storage;
     }
 
-    @Override
-    protected void setRegion() {
-        textureRegion = atlas.findRegion("convayerTile");
-    }
+//    @Override
+//    protected void setRegion() {
+//        textureRegion = atlas.findRegion("convayerTile");
+//    }
 }

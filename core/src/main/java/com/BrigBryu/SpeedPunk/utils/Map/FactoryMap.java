@@ -129,18 +129,37 @@ public class FactoryMap {
         return factoryMap;
     }
 
-    public void handleHover(int tileX, int tileY) {
+    public void handleHover(int tileX, int tileY,
+                            GameConstants.TileType selectedTileType,
+                            GameConstants.DirectionType selectedDirection) {
+
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (tiles[r][c] != null) {
-                    ((FactoryTile) tiles[r][c]).setHighlighted(false);
-                }
+                tiles[r][c].setHighlighted(null, null);
             }
         }
 
         if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
-            if (tiles[tileY][tileX] != null) {
-                tiles[tileY][tileX].setHighlighted(true);
+            FactoryTile hoveredTile = tiles[tileY][tileX];
+
+            //selected tile means that selected tile type == EMPTY
+            if (selectedTileType == null || selectedTileType == GameConstants.TileType.EMPTY) {
+                // If hovered tile is empty highlight
+                if (hoveredTile.getFactoryTileType() == GameConstants.TileType.EMPTY) {
+                    hoveredTile.setHighlighted(GameConstants.TileType.EMPTY, selectedDirection);
+                } else {
+                    hoveredTile.setHighlighted(null, GameConstants.DirectionType.NA);
+                }
+
+                //building selected
+            } else {
+                if (hoveredTile.getFactoryTileType() == GameConstants.TileType.EMPTY) {
+                    // Valid spot ghosted building in blue
+                    hoveredTile.setHighlighted(selectedTileType, selectedDirection);
+                } else {
+                    // red highlight
+                    hoveredTile.setHighlighted(null, GameConstants.DirectionType.NA);
+                }
             }
         }
     }

@@ -21,8 +21,8 @@ public class MoneyCreatorFactoryTile extends ResourceCreatorFactoryTile{
 
     }
 
-    @Override
-    protected void setRegion() {
-        textureRegion = atlas.findRegion("moneySpawnTile");
-    }
+//    @Override
+//    protected void setRegion() {
+//        textureRegion = atlas.findRegion("moneySpawnTile");
+//    }
 }

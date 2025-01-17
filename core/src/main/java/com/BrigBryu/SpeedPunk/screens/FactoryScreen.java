@@ -83,35 +83,47 @@ public class FactoryScreen implements Screen {
 
     private void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-            selectedTileType = GameConstants.TileType.NODE_PRODUCER;
-            System.out.println("Selected tile: NODE_PRODUCER");
+            if(selectedTileType == GameConstants.TileType.MONEY_MAKER) {
+                selectedTileType = null;
+            } else {
+                selectedTileType = GameConstants.TileType.MONEY_MAKER;
+                System.out.println("Selected tile: MONEY_MAKER");
+            }
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
-            selectedTileType = GameConstants.TileType.CONVEYOR_BELT;
-            System.out.println("Selected tile: CONVEYOR_BELT");
+            if(selectedTileType == GameConstants.TileType.CONVEYOR_BELT) {
+                selectedTileType = null;
+            } else {
+                selectedTileType = GameConstants.TileType.CONVEYOR_BELT;
+                System.out.println("Selected tile: CONVEYOR_BELT");
+            }
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
-            selectedTileType = GameConstants.TileType.COLLECTOR;
-            System.out.println("Selected tile: COLLECTOR");
+            if(selectedTileType == GameConstants.TileType.COLLECTOR) {
+                selectedTileType = null;
+            } else {
+                selectedTileType = GameConstants.TileType.COLLECTOR;
+                System.out.println("Selected tile: COLLECTOR");
+            }
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
-            selectedTileType = GameConstants.TileType.STORAGE;
-            System.out.println("Selected tile: STORAGE");
+            if(selectedTileType == GameConstants.TileType.STORAGE) {
+                    selectedTileType = null;
+            } else {
+                    selectedTileType = GameConstants.TileType.STORAGE;
+                    System.out.println("Selected tile: STORAGE");
+            }
         }
 
-        if (selectedTileType == GameConstants.TileType.CONVEYOR_BELT ||
-            selectedTileType == GameConstants.TileType.COLLECTOR) {
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-                selectedDirection = GameConstants.DirectionType.NORTH;
-                System.out.println("Direction: NORTH");
-            } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-                selectedDirection = GameConstants.DirectionType.EAST;
-                System.out.println("Direction: EAST");
-            } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-                selectedDirection = GameConstants.DirectionType.SOUTH;
-                System.out.println("Direction: SOUTH");
-            } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-                selectedDirection = GameConstants.DirectionType.WEST;
-                System.out.println("Direction: WEST");
-            }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+            selectedDirection = GameConstants.DirectionType.NORTH;
+            System.out.println("Direction: NORTH");
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+            selectedDirection = GameConstants.DirectionType.EAST;
+            System.out.println("Direction: EAST");
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+            selectedDirection = GameConstants.DirectionType.SOUTH;
+            System.out.println("Direction: SOUTH");
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+            selectedDirection = GameConstants.DirectionType.WEST;
+            System.out.println("Direction: WEST");
         }
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
@@ -144,7 +156,7 @@ public class FactoryScreen implements Screen {
         int tileX = (int)(worldCoords.x / GameConstants.TILE_WIDTH);
         int tileY = (int)(worldCoords.y / GameConstants.TILE_HEIGHT);
 
-        worldMap.handleHover(tileX, tileY);
+        worldMap.handleHover(tileX, tileY, selectedTileType, selectedDirection);
     }
 
 

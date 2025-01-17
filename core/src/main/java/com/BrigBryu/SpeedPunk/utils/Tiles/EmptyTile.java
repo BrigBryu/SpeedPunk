@@ -19,8 +19,8 @@ public class EmptyTile extends FactoryTile{
 
     }
 
-    @Override
-    protected void setRegion() {
-        textureRegion = atlas.findRegion("emptyTile");
-    }
+//    @Override
+//    protected void setRegion() {
+//        textureRegion = atlas.findRegion("emptyTile");
+//    }
 }

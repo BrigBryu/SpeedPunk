@@ -20,8 +20,8 @@ public class MoneyResetter extends FactoryTile  {
 
     }
 
-    @Override
-    protected void setRegion() {
-        textureRegion = atlas.findRegion("moneyReset");
-    }
+//    @Override
+//    protected void setRegion() {
+//        textureRegion = atlas.findRegion("moneyReset");
+//    }
 }
