@@ -1,6 +1,6 @@
 package com.BrigBryu.SpeedPunk.utils.Map;
 
-import com.BrigBryu.SpeedPunk.utils.Tiles.TileData;
+import com.BrigBryu.SpeedPunk.FactoryGameObjects.tiles.TileData;
 
 public class MapData {
     public int rows;

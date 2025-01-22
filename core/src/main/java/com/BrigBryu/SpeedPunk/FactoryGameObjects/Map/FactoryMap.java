@@ -1,13 +1,17 @@
 package com.BrigBryu.SpeedPunk.utils.Map;
 
+import com.BrigBryu.SpeedPunk.FactoryGameObjects.tiles.EmptyTile;
+import com.BrigBryu.SpeedPunk.FactoryGameObjects.tiles.FactoryTile;
+import com.BrigBryu.SpeedPunk.FactoryGameObjects.tiles.TileData;
 import com.BrigBryu.SpeedPunk.utils.GameConstants;
 import com.BrigBryu.SpeedPunk.utils.PlayerState;
 import com.BrigBryu.SpeedPunk.utils.Tiles.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 
 import static com.BrigBryu.SpeedPunk.utils.GameConstants.TileType.EMPTY;
@@ -37,8 +41,8 @@ public class FactoryMap {
     public void restMap() {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                float x = c * GameConstants.TILE_WIDTH;
-                float y = r * GameConstants.TILE_HEIGHT;
+                float x = (c + GameConstants.FACTORY_MAP_TILE_OFF_SET.x)* GameConstants.TILE_WIDTH;
+                float y = (r + GameConstants.FACTORY_MAP_TILE_OFF_SET.y) * GameConstants.TILE_HEIGHT;
                 tiles[r][c] = new EmptyTile(x, y, GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT, atlas);
             }
         }
@@ -93,7 +97,7 @@ public class FactoryMap {
     public static FactoryMap load(String fileName, TextureAtlas atlas, PlayerState playerState) {
         FileHandle file = Gdx.files.local(fileName);
         if (!file.exists()) {
-            FactoryMap map = new FactoryMap(100,100,atlas,playerState);
+            FactoryMap map = new FactoryMap(25,25,atlas,playerState);
             map.restMap();
             return map;
         }
@@ -129,9 +133,41 @@ public class FactoryMap {
         return factoryMap;
     }
 
+    //Mark: getters
+    public Rectangle getTileRectangle(){
+        return new Rectangle(
+            GameConstants.FACTORY_MAP_TILE_OFF_SET.x, GameConstants.FACTORY_MAP_TILE_OFF_SET.y,
+            tiles.length, tiles[0].length);
+    }
+
+    public Rectangle getPixleRectangle(){
+        return new Rectangle(
+            GameConstants.FACTORY_MAP_TILE_OFF_SET.x * GameConstants.TILE_HEIGHT,
+            GameConstants.FACTORY_MAP_TILE_OFF_SET.y * GameConstants.TILE_HEIGHT,
+            tiles.length * GameConstants.TILE_HEIGHT,
+            tiles[0].length * GameConstants.TILE_HEIGHT);
+    }
+
+
+
+    public Vector2 getCenter() {
+        return new Vector2(cols - tiles[0].length/2f, rows - tiles.length/2f);
+    }
+
+    public int getWidth(){
+        return cols;
+    }
+
+    public int getHeight(){
+        return rows;
+    }
+
+
     public void handleHover(int tileX, int tileY,
                             GameConstants.TileType selectedTileType,
                             GameConstants.DirectionType selectedDirection) {
+        tileX -= GameConstants.FACTORY_MAP_TILE_OFF_SET.x;
+        tileY -= GameConstants.FACTORY_MAP_TILE_OFF_SET.y;
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
@@ -167,6 +203,8 @@ public class FactoryMap {
     //Mark: Handle clicks on all types of tiles
     public void handleClick(int tileX, int tileY) {
         if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
+            tileX -= GameConstants.FACTORY_MAP_TILE_OFF_SET.x;
+            tileY -= GameConstants.FACTORY_MAP_TILE_OFF_SET.y;
             tiles[tileY][tileX].click(this, tileX, tileY);
         }
     }
@@ -220,6 +258,9 @@ public class FactoryMap {
         float x = tileX * GameConstants.TILE_WIDTH;
         float y = tileY * GameConstants.TILE_HEIGHT;
 
+        if(type == null){
+            return;
+        }
         switch (type) {
             case NODE_PRODUCER:
                 tiles[tileY][tileX] = new MoneyCreatorFactoryTile(
